@@ -1,0 +1,23 @@
+{
+  "name": "pimaas",
+  "version": "0.0.1",
+  "description": "Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of starting a discussion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcpeters/PIMaaS.git"
+  },
+  "author": "RCPeters and TomDemeranville",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rcpeters/PIMaaS/issues"
+  },
+  "homepage": "https://github.com/rcpeters/PIMaaS#readme",
+  "dependencies": {
+    "bigchaindb-driver": "^0.3.0",
+    "mongojs": "^2.4.1",
+  }
+}
