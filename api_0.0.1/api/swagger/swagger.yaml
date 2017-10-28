@@ -18,9 +18,23 @@ consumes:
 produces:
   - application/json
 paths:
-  /pim/{pimId}:
+  /pim:
     # binds a127 app logic to a route
     x-swagger-router-controller: pim
+    post:
+      description: Creates persisted and identified data (PIM)
+      consumes:
+      - "application/json"
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HelloWorldResponse"
+      responses:
+        "201":
+          description: Created
+  /pim/{pimId}:
     get:
       description: Returns persisted and identified data (PIM)
       # used as the method name of the controller
