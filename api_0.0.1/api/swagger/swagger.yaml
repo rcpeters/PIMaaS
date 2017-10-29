@@ -18,22 +18,6 @@ consumes:
 produces:
   - application/json
 paths:
-  /pim:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: pim
-    post:
-      description: Creates persisted and identified data (PIM)
-      consumes:
-      - "application/json"
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/HelloWorldResponse"
-      responses:
-        "201":
-          description: Created
   /pim/{pimId}:
     get:
       description: Returns persisted and identified data (PIM)
@@ -50,12 +34,28 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
+            $ref: "#/definitions/pim"
         # responses may fall through to errors
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /pim:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: pim
+    post:
+      description: Creates persisted and identified data (PIM)
+      consumes:
+      - "application/json"
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/pim"
+      responses:
+        "201":
+          description: Created
   /schema/{schemaId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
@@ -80,7 +80,22 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-
+  /schema:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: schema
+    post:
+      description: Creates schema to be used with (PIM)
+      consumes:
+      - "application/json"
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/HelloWorldResponse"
+      responses:
+        "201":
+          description: Created
   /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
@@ -109,6 +124,16 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
+  pim:
+    required:
+      - schemaId
+      - metadata
+    properties:
+      schemaId:
+        type: string
+      metadata:
+        type: object
+
   HelloWorldResponse:
     required:
       - message
