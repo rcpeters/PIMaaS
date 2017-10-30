@@ -106,23 +106,23 @@ definitions:
       schemaId:
         description: ID of schema used to verify the metadata is valid (enforced at the webapp level). 
         type: string
-      supersedes:
-        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
-        type: string
       metadata:
         description: Metadata to be persisted
         type: object
+      supersedes:
+        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
+        type: string
         
   pimSchmema:
     required:
       - schema
     properties:
-      supersedes:
-        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
-        type: string
       schema:
         description: JSON schema used to validate PIMs
         type: object
+      supersedes:
+        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
+        type: string
 
   ErrorResponse:
     required:
