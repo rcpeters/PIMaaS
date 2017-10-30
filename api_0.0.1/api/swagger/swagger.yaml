@@ -74,7 +74,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
+            $ref: "#/definitions/pimSchmema"
         # responses may fall through to errors
         default:
           description: Error
@@ -92,36 +92,10 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/HelloWorldResponse"
+            $ref: "#/definitions/pimSchmema"
       responses:
         "201":
           description: Created
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /swagger:
-    x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
   pim:
@@ -130,16 +104,26 @@ definitions:
       - metadata
     properties:
       schemaId:
+        description: ID of schema used to verify the metadata is valid (enforced at the webapp level). 
+        type: string
+      supersedes:
+        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
         type: string
       metadata:
+        description: Metadata to be persisted
+        type: object
+        
+  pimSchmema:
+    required:
+      - schema
+    properties:
+      supersedes:
+        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
+        type: string
+      schema:
+        description: JSON schema used to validate PIMs
         type: object
 
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   ErrorResponse:
     required:
       - message
