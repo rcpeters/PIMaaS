@@ -36,6 +36,10 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/pim"
         # responses may fall through to errors
+        "301": 
+          description: Moved Permanently, this PIM has been superseded by a new PIM
+          schema:
+            $ref: "#/definitions/pim301"
         default:
           description: Error
           schema:
@@ -56,6 +60,11 @@ paths:
       responses:
         "201":
           description: Created
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /schema/{schemaId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
@@ -80,6 +89,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+
   /schema:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
@@ -96,6 +106,9 @@ paths:
       responses:
         "201":
           description: Created
+        "301": 
+          description: Moved Permanently, this schema has been superseded by a new schema
+
 # complex objects have schema definitions
 definitions:
   pim:
@@ -111,6 +124,14 @@ definitions:
         type: object
       supersedes:
         description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
+        type: string
+
+  pim301:
+    required:
+      - see-pim
+    properties:
+      see-pim:
+        description: New pim
         type: string
         
   pimSchmema:
@@ -129,4 +150,8 @@ definitions:
       - message
     properties:
       message:
+        description: human readable string
+        type: string
+      error-code:
+        description: Optional code that identifiy the specific issue
         type: string
