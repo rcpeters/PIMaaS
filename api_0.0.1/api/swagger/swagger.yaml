@@ -20,13 +20,13 @@ produces:
 paths:
   /pim/{pimId}:
     get:
-      description: Returns persisted and identified data (PIM)
+      description: Returns persisted and identified metadata (PIM)
       # used as the method name of the controller
       operationId: getPim
       parameters:
         - in: path
           name: pimId
-          description: ID of pim
+          description: ID of PIM
           required: true
           type: string
       responses:
