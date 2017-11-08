@@ -55,7 +55,7 @@ paths:
       parameters:
         - in: query
           name: schemaId
-          description: ID of schema refrenced in pims
+          description: ID of schema referenced in pims
           required: true
           type: string
         - in: query
@@ -226,5 +226,5 @@ definitions:
         description: human readable string
         type: string
       error-code:
-        description: Optional code that identifiy the specific issue
+        description: Optional code that identifies the specific issue
         type: string
