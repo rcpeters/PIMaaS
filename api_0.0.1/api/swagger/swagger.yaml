@@ -205,7 +205,7 @@ definitions:
       - see-pim
     properties:
       see-pim:
-        description: New pim
+        description: Provides new PIM
         type: string
         
   pimSchmema:
