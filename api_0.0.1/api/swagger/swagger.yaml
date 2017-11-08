@@ -19,7 +19,9 @@ consumes:
 produces:
   - application/json
 paths:
+
   /pims/{pimId}:
+    x-swagger-router-controller: pim
     get:
       description: Returns persisted and identified metadata (PIM)
       # used as the method name of the controller
