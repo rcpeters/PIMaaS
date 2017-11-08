@@ -52,6 +52,14 @@ paths:
       consumes:
       - "application/json"
       parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
         - name: body
           in: body
           required: true
@@ -60,6 +68,12 @@ paths:
       responses:
         "201":
           description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pim"
         default:
           description: Error
           schema:
@@ -69,7 +83,7 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
     get:
-      description: Returns schema that was posted as a PIM
+      description: Returns schema
       # used as the method name of the controller
       operationId: getSchema
       parameters:
@@ -98,6 +112,14 @@ paths:
       consumes:
       - "application/json"
       parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
         - name: body
           in: body
           required: true
@@ -106,6 +128,12 @@ paths:
       responses:
         "201":
           description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pimSchmema"
         "301": 
           description: Moved Permanently, this schema has been superseded by a new schema
 
