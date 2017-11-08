@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title:  Persisted and Identified Metadata as a Service (PIMaaS) API
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
@@ -18,7 +18,7 @@ consumes:
 produces:
   - application/json
 paths:
-  /pim/{pimId}:
+  /pims/{pimId}:
     get:
       description: Returns persisted and identified metadata (PIM)
       # used as the method name of the controller
@@ -44,9 +44,41 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /pim:
+
+  /pims:
     # binds a127 app logic to a route
     x-swagger-router-controller: pim
+    get:
+      description: Returns persisted and identified metadata (PIM)
+      # used as the method name of the controller
+      operationId: getPims
+      parameters:
+        - in: query
+          name: schemaId
+          description: ID of schema refrenced in pims
+          required: true
+          type: string
+        - in: query
+          name: start
+          description: start position for pagination 
+          required: false
+          type: integer
+          default: 0
+        - in: query
+          name: rows
+          description: number of rows to return 
+          required: false
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 10
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pimList"
+        # responses may fall through to errors
     post:
       description: Creates persisted and identified data (PIM)
       consumes:
@@ -79,7 +111,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /schema/{schemaId}:
+  /schemas/{schemaId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
     get:
@@ -104,7 +136,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /schema:
+  /schemas:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
     post:
@@ -154,6 +186,19 @@ definitions:
         description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
         type: string
 
+  pimList:
+    required:
+      - numberOfResults
+    properties:
+      numberOfResults:
+        description: Number of results available
+        type: integer
+      pimArray:
+        description: list of PIMs
+        type: array
+        items:
+          type: string
+      
   pim301:
     required:
       - see-pim
