@@ -2,6 +2,7 @@ swagger: "2.0"
 info:
   version: "0.0.1"
   title:  Persisted and Identified Metadata as a Service (PIMaaS) API
+  description: Specification of service that would allow creation of PIM sets by pushing a JSON schema. The returned schemaId is used to define and validate an unique set of PIMs. 
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
