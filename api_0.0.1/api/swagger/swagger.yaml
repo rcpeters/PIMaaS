@@ -22,6 +22,7 @@ paths:
 
   /pims/{pimId}:
     get:
+      x-swagger-router-controller: pims
       description: Returns persisted and identified metadata (PIM)
       # used as the method name of the controller
       operationId: getPim
@@ -49,7 +50,7 @@ paths:
 
   /pims:
     # binds a127 app logic to a route
-    x-swagger-router-controller: pim
+    x-swagger-router-controller: pims
     get:
       description: Returns persisted and identified metadata (PIM)
       # used as the method name of the controller
