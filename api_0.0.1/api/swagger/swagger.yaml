@@ -48,6 +48,7 @@ paths:
           description: Moved Permanently, this PIM has been superseded by a new PIM
           headers:
             Location:
+              description: value points at new pim
               type: "string"
           schema:
             $ref: "#/definitions/pim"
@@ -141,11 +142,15 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/pimSet"
+        "301": 
+          description: Moved Permanently, this set has been superseded by a new set
+
         # responses may fall through to errors
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+
 
   /set:
     # binds a127 app logic to a route
@@ -177,8 +182,6 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/pimSet"
-        "301": 
-          description: Moved Permanently, this set has been superseded by a new set
           
   /transactions/{id}:
     # binds a127 app logic to a route
