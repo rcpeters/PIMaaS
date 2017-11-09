@@ -21,7 +21,6 @@ produces:
 paths:
 
   /pims/{pimId}:
-    x-swagger-router-controller: pim
     get:
       description: Returns persisted and identified metadata (PIM)
       # used as the method name of the controller
@@ -171,6 +170,31 @@ paths:
             $ref: "#/definitions/pimSchmema"
         "301": 
           description: Moved Permanently, this schema has been superseded by a new schema
+          
+  /transactions/{id}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: transaction
+    get:
+      description: Returns transaction data from the underlying persistence layer BigChainDB. This is useful for auditing purposes. See (https://docs.bigchaindb.com/projects/server/en/latest/data-models/transaction-model.html). 
+      # used as the method name of the controller
+      operationId: getTransaction
+      parameters:
+        - in: path
+          name: id
+          description: ID of schema or metadata
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            type: object
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
 # complex objects have schema definitions
 definitions:
