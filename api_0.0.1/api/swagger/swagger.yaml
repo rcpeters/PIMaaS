@@ -49,7 +49,7 @@ paths:
           headers:
             Location:
               description: value points at new pim
-              type: "string"
+              type: string
           schema:
             $ref: "#/definitions/pim"
         default:
@@ -114,7 +114,7 @@ paths:
           description: Created
           headers:
             Location:
-              type: "string"
+              type: string
           schema:
             # a pointer to a definition
             $ref: "#/definitions/pim"
@@ -144,7 +144,13 @@ paths:
             $ref: "#/definitions/pimSet"
         "301": 
           description: Moved Permanently, this set has been superseded by a new set
-
+          headers:
+            Location:
+              description: location of new set
+              type: string
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pimSet"
         # responses may fall through to errors
         default:
           description: Error
