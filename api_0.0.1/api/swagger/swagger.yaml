@@ -20,7 +20,7 @@ produces:
   - application/json
 paths:
 
-  /pims/{pimId}:
+  /pims/{setName}/{pimId}:
     get:
       x-swagger-router-controller: pims
       description: Returns persisted and identified metadata (PIM)
@@ -32,6 +32,11 @@ paths:
           description: ID of PIM
           required: true
           type: string
+        - in: path
+          name: setName
+          description: Set Name
+          required: true
+          type: string
       responses:
         "200":
           description: Success
@@ -41,8 +46,11 @@ paths:
         # responses may fall through to errors
         "301": 
           description: Moved Permanently, this PIM has been superseded by a new PIM
+          headers:
+            Location:
+              type: "string"
           schema:
-            $ref: "#/definitions/pim301"
+            $ref: "#/definitions/pim"
         default:
           description: Error
           schema:
@@ -57,8 +65,8 @@ paths:
       operationId: getPims
       parameters:
         - in: query
-          name: schemaId
-          description: ID of schema referenced in pims
+          name: setName
+          description: Name of schema referenced in pims
           required: true
           type: string
         - in: query
@@ -114,7 +122,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /schemas/{schemaId}:
+  /set/{setId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
     get:
@@ -123,8 +131,8 @@ paths:
       operationId: getSchema
       parameters:
         - in: path
-          name: schemaId
-          description: ID of schema
+          name: setId
+          description: ID of PIM set
           required: true
           type: string
       responses:
@@ -132,18 +140,18 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/pimSchmema"
+            $ref: "#/definitions/pimSet"
         # responses may fall through to errors
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /schemas:
+  /set:
     # binds a127 app logic to a route
     x-swagger-router-controller: schema
     post:
-      description: Creates schema to be used with (PIM)
+      description: Creates a set definition to be used with PIMs
       consumes:
       - "application/json"
       parameters:
@@ -159,7 +167,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/pimSchmema"
+            $ref: "#/definitions/pimSet"
       responses:
         "201":
           description: Created
@@ -168,9 +176,9 @@ paths:
               type: "string"
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/pimSchmema"
+            $ref: "#/definitions/pimSet"
         "301": 
-          description: Moved Permanently, this schema has been superseded by a new schema
+          description: Moved Permanently, this set has been superseded by a new set
           
   /transactions/{id}:
     # binds a127 app logic to a route
@@ -227,23 +235,19 @@ definitions:
         items:
           type: string
       
-  pim301:
-    required:
-      - see-pim
-    properties:
-      see-pim:
-        description: Provides new PIM
-        type: string
-        
-  pimSchmema:
+  pimSet:
     required:
       - schema
+      - name
     properties:
+      name:
+        description: Name of schema. In multinode environments there is a possibiliy of a race condition. First one in wins. 
+        type: string
       schema:
-        description: JSON schema used to validate PIMs
+        description: JSON schema used to validate PIMs. Best practice would to use JSON-LD and Schema.org, however we any JSON schema is allowed to provide the flexibly needed for your set of PIMs.
         type: object
       supersedes:
-        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
+        description: ID of another PIM this PIM supersedes...only schema owners should use this (enforced at the webapp level).
         type: string
 
   ErrorResponse:
