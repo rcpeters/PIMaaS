@@ -213,9 +213,41 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+            
+  /ed25519Keypair:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: bigchaindbUtil
+    get:
+      description: Returns a ed25519Keypair https://ed25519.cr.yp.to/
+      # used as the method name of the controller
+      operationId: getEd25519Keypair
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ed25519Keypair"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
 # complex objects have schema definitions
 definitions:
+  ed25519Keypair:
+    required:
+      - publicKey
+      - privateKey
+    properties:
+      publicKey:
+        description: Public key
+        type: string
+      privateKey:
+        description: Private key
+        type: string
+
+
   pim:
     required:
       - schemaId
@@ -243,7 +275,7 @@ definitions:
         type: array
         items:
           type: string
-      
+
   pimSet:
     required:
       - schema
