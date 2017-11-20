@@ -10,6 +10,8 @@
 
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
+
+var bigchainManger = new (require("../../local_modules/bigchain_manager.js").BigchainManger)();
 var util = require('util');
 const driver = require('bigchaindb-driver');
 
@@ -36,5 +38,5 @@ module.exports = {
   Param 2: a handle to the response object
  */
 function getEd25519Keypair(req, res) {
-  res.json(new driver.Ed25519Keypair());
+  res.json(bigchainManger.getEd25519Keypair());
 }

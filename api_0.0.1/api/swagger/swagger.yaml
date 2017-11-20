@@ -125,7 +125,7 @@ paths:
 
   /set/{setId}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: schema
+    x-swagger-router-controller: set
     get:
       description: Returns schema
       # used as the method name of the controller
@@ -160,8 +160,9 @@ paths:
 
   /set:
     # binds a127 app logic to a route
-    x-swagger-router-controller: schema
+    x-swagger-router-controller: set
     post:
+      operationId: createSet
       description: Creates a set definition to be used with PIMs
       consumes:
       - "application/json"
