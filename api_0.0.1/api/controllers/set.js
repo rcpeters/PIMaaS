@@ -48,6 +48,5 @@ function createSet(req, res) {
       res.location('/test_blah_blah')
       res.status(201).json(trans.asset.data);
   })
-
 }
 
