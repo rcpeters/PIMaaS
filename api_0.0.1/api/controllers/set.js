@@ -11,7 +11,7 @@
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
 var util = require('util');
-var bigchainManger = new (require("../../local_modules/bigchain_manager.js").BigchainManger)();
+var bigchainManger = require("../../local_modules/bigchain_manager.js");
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -41,7 +41,7 @@ function createSet(req, res) {
   console.log(req.body);
   var msg = {name:"test", schema: {}};
 
-  bigchainManger.postTransaction(req.body, publicKey, privateKey, 
+  bigchainManger.postAndSignTx(req.body, publicKey, privateKey, 
     function(trans){ 
     // this sends back a JSON response which is a single string
     console.log(JSON.stringify(trans.asset.data, null, 4));

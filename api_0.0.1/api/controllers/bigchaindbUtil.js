@@ -11,7 +11,7 @@
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
 
-var bigchainManger = new (require("../../local_modules/bigchain_manager.js").BigchainManger)();
+var bigchainManger = require("../../local_modules/bigchain_manager.js");
 var util = require('util');
 const driver = require('bigchaindb-driver');
 

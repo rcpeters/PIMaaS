@@ -189,7 +189,7 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/pimSet"
-          
+  
   /transactions/{id}:
     # binds a127 app logic to a route
     x-swagger-router-controller: transaction

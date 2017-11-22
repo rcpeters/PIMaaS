@@ -1,8 +1,9 @@
 var mongojs = require('mongojs'),
   Ajv = require('ajv')
 
-
-var BigchainManger = function(){
+// singleton https://team.goodeggs.com/export-this-interface-design-patterns-for-node-js-modules-b48a3b1f8f40
+function BigchainManger () {
+   console.log("New BigchainManger Instance")
    this.API_PATH = 'http://localhost:9984/api/v1/';
    this.driver = require('bigchaindb-driver')  
 }
@@ -11,7 +12,7 @@ BigchainManger.prototype.getEd25519Keypair = function() {
     return new this.driver.Ed25519Keypair();
 }
 
-BigchainManger.prototype.postTransaction = function(data, publicKey, privateKey, func) {
+BigchainManger.prototype.postAndSignTx = function(data, publicKey, privateKey, func) {
 // Construct a transaction payload
     var tx = this.driver.Transaction.makeCreateTransaction(
         data,
@@ -24,19 +25,18 @@ BigchainManger.prototype.postTransaction = function(data, publicKey, privateKey,
         ],
         publicKey
     )
-    console.log("start signing'")
     const txSigned = this.driver.Transaction.signTransaction(tx, privateKey)
-    console.log("connect to db")
+    this.postTx(txSigned, func);    
+}
+
+BigchainManger.prototype.postTx = function(tx, func) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
-    console.log("post")    
-    conn.postTransaction(txSigned)
-            .then(() => conn.pollStatusAndFetchTransaction(txSigned.id))
+    conn.postTransaction(tx)
+            .then(() => conn.pollStatusAndFetchTransaction(tx.id))
         .then(
         function(retrievedTx) {
             func(retrievedTx);
-    })
-        
-
+    })    
 }
 
-exports.BigchainManger = BigchainManger;
+module.exports = exports = new BigchainManger();
