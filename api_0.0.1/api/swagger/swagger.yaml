@@ -92,7 +92,7 @@ paths:
             $ref: "#/definitions/pimList"
         # responses may fall through to errors
     post:
-      description: Creates persisted and identified data (PIM)
+      description: Creates persisted and identified data (PIM). Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
       consumes:
       - "application/json"
       parameters:
@@ -158,12 +158,12 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 
 
-  /set:
+  /sets:
     # binds a127 app logic to a route
     x-swagger-router-controller: set
     post:
       operationId: createSet
-      description: Creates a set definition to be used with PIMs
+      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
       consumes:
       - "application/json"
       parameters:
@@ -214,6 +214,39 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  
+  /transactions:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: transaction
+    post:
+      description: Creates a with underlying persistence layer BigChainDB. 
+      # used as the method name of the controller
+      operationId: createTransaction
+      consumes:
+      - "application/json"
+      parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/pimSet"
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pimSet"
             
   /ed25519Keypair:
     # binds a127 app logic to a route
