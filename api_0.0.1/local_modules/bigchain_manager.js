@@ -29,6 +29,14 @@ BigchainManger.prototype.postAndSignTx = function(data, publicKey, privateKey, f
     this.postTx(txSigned, func);    
 }
 
+BigchainManger.prototype.getTx = function(tx, func) {
+    const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
+        conn.getTransaction(retrievedTx.id).then(
+                function(retrievedTx) {
+            console.log('Transaction', retrievedTx, 'fetched second time')
+        })
+}
+
 BigchainManger.prototype.postTx = function(tx, func) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
     conn.postTransaction(tx)
