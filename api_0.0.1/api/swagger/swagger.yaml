@@ -123,13 +123,13 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /set/{setId}:
+  /sets/{setId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: set
     get:
       description: Returns schema
       # used as the method name of the controller
-      operationId: getSchema
+      operationId: getSet
       parameters:
         - in: path
           name: setId

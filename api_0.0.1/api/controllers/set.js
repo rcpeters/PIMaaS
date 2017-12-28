@@ -11,7 +11,7 @@
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
 var util = require('util');
-var bigchainManger = require("../../local_modules/bigchain_manager.js");
+var pimaasManger = require("../../local_modules/pimaas_manager.js");
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -26,7 +26,8 @@ var bigchainManger = require("../../local_modules/bigchain_manager.js");
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-  createSet: createSet
+  createSet: createSet,
+  getSet: getSet
 };
 
 /*
@@ -41,12 +42,18 @@ function createSet(req, res) {
   console.log(req.body);
   var msg = {name:"test", schema: {}};
 
-  bigchainManger.signTxAndPost(req.body, publicKey, privateKey, 
+  pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
     function(trans){ 
     // this sends back a JSON response which is a single string
-    console.log(JSON.stringify(trans.asset.data, null, 4));
-      res.location('/test_blah_blah')
+    console.log(JSON.stringify(trans, null, 4));
+      res.location('/sets/' + trans.id)
       res.status(201).json(trans.asset.data);
   })
 }
 
+function getSet(req, res) {
+  var setId = req.swagger.params.setId.value;
+  pimaasManger.getTx(setId, function(tx){
+      res.status(200).json(tx);
+  });
+}

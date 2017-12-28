@@ -1,5 +1,4 @@
-var mongojs = require('mongojs'),
-  Ajv = require('ajv')
+var mongojs = require('mongojs')
 
 // singleton https://team.goodeggs.com/export-this-interface-design-patterns-for-node-js-modules-b48a3b1f8f40
 function BigchainManger () {
@@ -32,11 +31,13 @@ BigchainManger.prototype.signTx = function(data, publicKey, privateKey) {
     return this.driver.Transaction.signTransaction(tx, privateKey)    
 }
 
-BigchainManger.prototype.getTx = function(tx, func) {
+BigchainManger.prototype.getTx = function(txId, func) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
-        conn.getTransaction(retrievedTx.id).then(
+        conn.getTransaction(txId).then(
                 function(retrievedTx) {
-            console.log('Transaction', retrievedTx, 'fetched second time')
+            console.log('Transaction', retrievedTx, 'fetched ')
+            console.log(retrievedTx.asset);
+            func(retrievedTx.asset.data)
         })
 }
 
