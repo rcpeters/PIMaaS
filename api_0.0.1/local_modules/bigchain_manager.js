@@ -12,8 +12,12 @@ BigchainManger.prototype.getEd25519Keypair = function() {
     return new this.driver.Ed25519Keypair();
 }
 
-BigchainManger.prototype.postAndSignTx = function(data, publicKey, privateKey, func) {
+BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey, func) {
 // Construct a transaction payload
+    this.postTx(this.signTx(data, publicKey, privateKey), func);    
+}
+
+BigchainManger.prototype.signTx = function(data, publicKey, privateKey) {
     var tx = this.driver.Transaction.makeCreateTransaction(
         data,
            // Metadata contains information about the transaction itself
@@ -25,8 +29,7 @@ BigchainManger.prototype.postAndSignTx = function(data, publicKey, privateKey, f
         ],
         publicKey
     )
-    const txSigned = this.driver.Transaction.signTransaction(tx, privateKey)
-    this.postTx(txSigned, func);    
+    return this.driver.Transaction.signTransaction(tx, privateKey)    
 }
 
 BigchainManger.prototype.getTx = function(tx, func) {

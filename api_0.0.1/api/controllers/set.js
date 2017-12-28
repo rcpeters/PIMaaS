@@ -31,7 +31,7 @@ module.exports = {
 
 /*
  sample curl:
- `curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/set"`
+ `curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/sets"`
 */
 function createSet(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
@@ -41,7 +41,7 @@ function createSet(req, res) {
   console.log(req.body);
   var msg = {name:"test", schema: {}};
 
-  bigchainManger.postAndSignTx(req.body, publicKey, privateKey, 
+  bigchainManger.signTxAndPost(req.body, publicKey, privateKey, 
     function(trans){ 
     // this sends back a JSON response which is a single string
     console.log(JSON.stringify(trans.asset.data, null, 4));
