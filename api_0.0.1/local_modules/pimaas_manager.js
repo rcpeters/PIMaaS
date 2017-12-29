@@ -19,8 +19,12 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
     return bigchainManger.signTx(data, publicKey, privateKey);
 }
 
-PIMaasManger.prototype.getTx = function(tx, func) {
-    bigchainManger.getTx(tx, func)
+PIMaasManger.prototype.getSet = function(txId, func) {
+    bigchainManger.getTx(txId, function(tx) {func(tx.asset.data)})
+}
+
+PIMaasManger.prototype.getTx = function(txId, func) {
+    bigchainManger.getTx(txId, func)
 }
 
 PIMaasManger.prototype.postTx = function(tx, func) {

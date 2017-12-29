@@ -36,8 +36,8 @@ BigchainManger.prototype.getTx = function(txId, func) {
         conn.getTransaction(txId).then(
                 function(retrievedTx) {
             console.log('Transaction', retrievedTx, 'fetched ')
-            console.log(retrievedTx.asset);
-            func(retrievedTx.asset.data)
+            console.log(retrievedTx);
+            func(retrievedTx)
         })
 }
 
