@@ -31,13 +31,12 @@ module.exports = {
 };
 
 /*
- sample curl:
- `curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/transactions"`
+  TODO: Test
 */
 function createTransaction(req, res) {
   console.log(req.body);
  
-  pimaasManger.Post(req.body, publicKey, privateKey, 
+  pimaasManger.Post(req.body, 
     function(trans){ 
     // this sends back a JSON response which is a single string
     console.log(JSON.stringify(trans, null, 4))
