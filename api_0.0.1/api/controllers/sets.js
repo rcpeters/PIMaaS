@@ -32,16 +32,16 @@ module.exports = {
 
 /*
  sample curl:
- `curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/sets"`
+ curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/sets"
 */
+
 function createSet(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
   var privateKey = req.swagger.params.privateKey.value;
   var publicKey = req.swagger.params.publicKey.value;
   //console.log(JSON.stringify(req.swagger));
-  console.log(req.body);
-  var msg = {name:"test", schema: {}};
-
+  //console.log(req.body);
+  
   pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
     function(trans){ 
     // this sends back a JSON response which is a single string
@@ -51,6 +51,10 @@ function createSet(req, res) {
   })
 }
 
+/*
+ sample curl:
+ curl -v  "http://localhost:10010/sets/efdb41501f32e793f9706505e51d9af9d6c5e26d36590edf79fa2cd776800562"
+*/
 function getSet(req, res) {
   var setId = req.swagger.params.setId.value;
   pimaasManger.getSet(setId, function(tx){

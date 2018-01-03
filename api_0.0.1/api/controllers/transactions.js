@@ -32,7 +32,7 @@ module.exports = {
 
 /*
  sample curl:
- `curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/sets"`
+ `curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {"test":"test"}}' -X POST "http://localhost:10010/transactions"`
 */
 function createTransaction(req, res) {
   console.log(req.body);

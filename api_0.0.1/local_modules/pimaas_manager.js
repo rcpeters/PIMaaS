@@ -12,7 +12,7 @@ PIMaasManger.prototype.getEd25519Keypair = function() {
 
 PIMaasManger.prototype.signTxAndPost = function(data, publicKey, privateKey, func) {
 // Construct a transaction payload
-    bigchainManger.postTx(this.signTx(data, publicKey, privateKey), func);    
+    this.postTx(this.signTx(data, publicKey, privateKey), func);    
 }
 
 PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
@@ -20,7 +20,7 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
 }
 
 PIMaasManger.prototype.getSet = function(txId, func) {
-    bigchainManger.getTx(txId, function(tx) {func(tx.asset.data)})
+    this.getTx(txId, function(tx) {func(tx.asset.data)})
 }
 
 PIMaasManger.prototype.getTx = function(txId, func) {
@@ -28,6 +28,8 @@ PIMaasManger.prototype.getTx = function(txId, func) {
 }
 
 PIMaasManger.prototype.postTx = function(tx, func) {
+    console.log("hereeeeeeeeeeeeeeeeeee")
+    console.log(tx)
     bigchainManger.postTx(tx, func);
 }
 
