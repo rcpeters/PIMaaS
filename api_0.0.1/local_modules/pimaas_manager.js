@@ -28,8 +28,6 @@ PIMaasManger.prototype.getTx = function(txId, func) {
 }
 
 PIMaasManger.prototype.postTx = function(tx, func) {
-    console.log("hereeeeeeeeeeeeeeeeeee")
-    console.log(tx)
     bigchainManger.postTx(tx, func);
 }
 
