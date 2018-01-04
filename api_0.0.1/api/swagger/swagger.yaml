@@ -93,6 +93,7 @@ paths:
         # responses may fall through to errors
     post:
       description: Creates persisted and identified data (PIM). Does require sending public and private key. Depending on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
+      operationId: createPim
       consumes:
       - "application/json"
       parameters:

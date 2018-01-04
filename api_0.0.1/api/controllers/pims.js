@@ -11,6 +11,7 @@
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
 var util = require('util');
+var pimaasManger = require("../../local_modules/pimaas_manager.js");
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -25,7 +26,8 @@ var util = require('util');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-  getPim: getPim
+  getPim: getPim,
+  createPim: createPim
 };
 
 /*
@@ -41,4 +43,25 @@ function getPim(req, res) {
 
   // this sends back a JSON response which is a single string
   res.json(msg);
+}
+
+/*
+ sample curl:
+ curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {}}' -X POST "http://localhost:10010/sets"
+*/
+
+function createPim(req, res) {
+  // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
+  var privateKey = req.swagger.params.privateKey.value;
+  var publicKey = req.swagger.params.publicKey.value;
+  //console.log(JSON.stringify(req.swagger));
+  //console.log(req.body);
+  
+  pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
+    function(trans){ 
+    // this sends back a JSON response which is a single string
+    console.log(JSON.stringify(trans, null, 4));
+      res.location('/sets/' + trans.id)
+      res.status(201).json(trans.asset.data);
+  })
 }

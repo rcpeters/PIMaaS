@@ -4,7 +4,7 @@ var mongojs = require('mongojs')
 function BigchainManger () {
    console.log("New BigchainManger Instance")
    this.API_PATH = 'http://localhost:9984/api/v1/';
-   this.driver = require('bigchaindb-driver')  
+   this.driver = require('bigchaindb-driver')
 }
 
 BigchainManger.prototype.getEd25519Keypair = function() {
@@ -16,12 +16,13 @@ BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey, f
     this.postTx(this.signTx(data, publicKey, privateKey), func);    
 }
 
-BigchainManger.prototype.signTx = function(data, publicKey, privateKey) {
+BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey) {
+    console.log("in sign")
     var tx = this.driver.Transaction.makeCreateTransaction(
         data,
            // Metadata contains information about the transaction itself
         // (can be `null` if not needed)
-        null, 
+        metadata, 
         // A transaction needs an output
         [ this.driver.Transaction.makeOutput(
             this.driver.Transaction.makeEd25519Condition(publicKey))
