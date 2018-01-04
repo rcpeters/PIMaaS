@@ -21,9 +21,6 @@ var setSchema = {
   "additionalProperties": false
 };
 
-//var validateSet = ajv.compile(setSchema);
-
-
 // singleton https://team.goodeggs.com/export-this-interface-design-patterns-for-node-js-modules-b48a3b1f8f40
 function PIMaasManger () {
    console.log("New PIMaasManger Instance")
@@ -34,33 +31,39 @@ PIMaasManger.prototype.getEd25519Keypair = function() {
 }
 
 PIMaasManger.prototype.signTxAndPost = function(data, publicKey, privateKey, func) {
-    console.log(data)
+    pimaasManger = this
+    pimaasManger.signTx(data, publicKey, privateKey, function(signed) {
+       pimaasManger.postTx(signed, func);    
+    })
+}
+
+PIMaasManger.prototype.signTx = function(data, publicKey, privateKey, func) {
     var txMeta = {};
     var pimaasManger = this
-    txMeta.isSet = ajv.validate(setSchema,data); 
+    txMeta.isSet = ajv.validate(setSchema, data);
+    console.log("!!!!!!!!!!!!!!!!1");
+            
+   console.log(txMeta.isSet);
     if (txMeta.isSet == true) {
         txMeta.setName = data.name;
-        pimaasManger.postTx(pimaasManger.signTx(data, txMeta, publicKey, privateKey), func);
+        func(bigchainManger.signTx(data, txMeta, publicKey, privateKey));
     }
     else {
+        console.log(data);
         txMeta.schemaId = data.schemaId;
         pimaasManger.getSchema(data.schemaId, function(pimSet) {
             console.log(ajv.validate(pimSet.schema,data.metadata))
             txMeta.setName = pimSet.name
-            if (ajv.validate(pimSet.schema,data.metadata)) {
-                pimaasManger.postTx(pimaasManger.signTx(data, txMeta, publicKey, privateKey), func);
-            }
+            console.log("!!!!!!!!!!!!!!!!2");
+            console.log(txMeta);
+            console.log("!!!!!!!!!!!!!!!!3");
+            
+            if (ajv.validate(pimSet.schema,data.metadata))
+                func(bigchainManger.signTx(data, txMeta, publicKey, privateKey));
             else
                 throw new Error("Doesn't validate");
         })
-
-    }
-    
-        
-}
-
-PIMaasManger.prototype.signTx = function(data, metadata, publicKey, privateKey) {
-    return bigchainManger.signTx(data, metadata, publicKey, privateKey);
+    }    
 }
 
 PIMaasManger.prototype.getSet = function(txId, func) {
@@ -70,7 +73,6 @@ PIMaasManger.prototype.getSet = function(txId, func) {
 PIMaasManger.prototype.getSchema = function(schemaId, func) {
     this.getTx(schemaId, function(tx) {func(tx.asset.data)})
 }
-
 
 PIMaasManger.prototype.validate = function(schemaId, metadata, func) {
     bigchainManger.getTx(schemaId, function(tx) {

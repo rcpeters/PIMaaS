@@ -17,7 +17,8 @@ BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey, f
 }
 
 BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey) {
-    console.log("in sign")
+    console.log("signTx")
+    console.log(privateKey)
     var tx = this.driver.Transaction.makeCreateTransaction(
         data,
            // Metadata contains information about the transaction itself
@@ -36,8 +37,6 @@ BigchainManger.prototype.getTx = function(txId, func) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
         conn.getTransaction(txId).then(
                 function(retrievedTx) {
-            console.log('Transaction', retrievedTx, 'fetched ')
-            console.log(retrievedTx);
             func(retrievedTx)
         })
 }

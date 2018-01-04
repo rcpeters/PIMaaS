@@ -38,11 +38,13 @@ module.exports = {
  */
 function getPim(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
-  var pimId = req.swagger.params.pimId.value || 'stranger';
-  var msg = util.format('this should be pim:%s', pimId);
+  var pimId = req.swagger.params.pimId.value;
+  var setName = req.swagger.params.setName.value;
 
   // this sends back a JSON response which is a single string
-  res.json(msg);
+  pimaasManger.getTx(pimId, function(tx){
+      res.status(200).json(tx.asset.data);
+  });
 }
 
 /*
@@ -60,8 +62,8 @@ function createPim(req, res) {
   pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
     function(trans){ 
     // this sends back a JSON response which is a single string
-    console.log(JSON.stringify(trans, null, 4));
-      res.location('/sets/' + trans.id)
+      //console.log(JSON.stringify(trans, null, 4));
+      res.location('/pims/' + trans.metadata.setName + '/' + trans.id)
       res.status(201).json(trans.asset.data);
   })
 }
