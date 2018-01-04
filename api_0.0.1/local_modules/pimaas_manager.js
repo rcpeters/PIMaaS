@@ -41,9 +41,6 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey, func) {
     var txMeta = {};
     var pimaasManger = this
     txMeta.isSet = ajv.validate(setSchema, data);
-    console.log("!!!!!!!!!!!!!!!!1");
-            
-   console.log(txMeta.isSet);
     if (txMeta.isSet == true) {
         txMeta.setName = data.name;
         func(bigchainManger.signTx(data, txMeta, publicKey, privateKey));
@@ -53,11 +50,7 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey, func) {
         txMeta.schemaId = data.schemaId;
         pimaasManger.getSchema(data.schemaId, function(pimSet) {
             console.log(ajv.validate(pimSet.schema,data.metadata))
-            txMeta.setName = pimSet.name
-            console.log("!!!!!!!!!!!!!!!!2");
-            console.log(txMeta);
-            console.log("!!!!!!!!!!!!!!!!3");
-            
+            txMeta.setName = pimSet.name           
             if (ajv.validate(pimSet.schema,data.metadata))
                 func(bigchainManger.signTx(data, txMeta, publicKey, privateKey));
             else
