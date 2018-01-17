@@ -7,7 +7,7 @@ Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of start
  * bigChainDB - Fancy pants blockchain like persistence layer. Required for this project. See 
    [bigChainDB/README.md](bigChainDB/README.md) for installing and running. 
 
- * api_0.0.1 - swagger enabled rest service. Swagger UI contains the documentation. See 
+ * api_0.0.1 - swagger enabled rest service. Swagger UI contains the rest API documentation and service for running rest API. See 
    [api_0.0.1/README.md](api_0.0.1/README.md) for installing and running.
 
 
