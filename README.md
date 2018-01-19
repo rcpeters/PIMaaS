@@ -18,5 +18,10 @@ Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of start
            {"publicKey":"5jah46G1XRHXMsUgXGzPMQCY5b3gHEJxCBQHpLEdJWvK","privateKey":"9Vtzv4mZwa2x5WywMbyKX8ePHrnJz6hyTvtK2nSGvUs"}
 
 
+## Quickly define a set of PIMs by providing a JSON schema
 
+## Quickly add PIM
 
+## Supersede a PIM
+
+## Supersede at set
