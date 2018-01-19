@@ -10,6 +10,13 @@ Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of start
  * api_0.0.1 - swagger enabled rest service. Swagger UI contains the rest API documentation and service for running rest API. See 
    [api_0.0.1/README.md](api_0.0.1/README.md) for installing and running.
 
+# Examples
+
+## Quickly get credentials
+
+           curl http://localhost:10010/ed25519Keypair
+           {"publicKey":"5jah46G1XRHXMsUgXGzPMQCY5b3gHEJxCBQHpLEdJWvK","privateKey":"9Vtzv4mZwa2x5WywMbyKX8ePHrnJz6hyTvtK2nSGvUs"}
+
 
 
 
