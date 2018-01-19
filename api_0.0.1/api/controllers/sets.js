@@ -57,7 +57,7 @@ function createSet(req, res) {
 */
 function getSet(req, res) {
   var setId = req.swagger.params.setId.value;
-  pimaasManger.getSet(setId, function(tx){
+  pimaasManger.getSet(setId).then(function(tx){
       res.status(200).json(tx);
-  });
+  })
 }

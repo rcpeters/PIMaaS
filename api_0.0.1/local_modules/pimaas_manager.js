@@ -48,7 +48,7 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey, func) {
     else {
         console.log(data);
         txMeta.schemaId = data.schemaId;
-        pimaasManger.getSchema(data.schemaId, function(pimSet) {
+        pimaasManger.getSet(data.schemaId).then(function(pimSet) {
             console.log(ajv.validate(pimSet.schema,data.metadata))
             txMeta.setName = pimSet.name           
             if (ajv.validate(pimSet.schema,data.metadata))
@@ -60,21 +60,30 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey, func) {
 }
 
 PIMaasManger.prototype.getSet = function(txId, func) {
-    this.getTx(txId, function(tx) {func(tx.asset.data)})
-}
-
-PIMaasManger.prototype.getSchema = function(schemaId, func) {
-    this.getTx(schemaId, function(tx) {func(tx.asset.data)})
+  return new Promise(function (resolve, reject) {
+      bigchainManger.getTx(txId).then(
+        function(retrievedTx) {
+          resolve(retrievedTx.asset.data)
+      })
+  })
 }
 
 PIMaasManger.prototype.validate = function(schemaId, metadata, func) {
-    bigchainManger.getTx(schemaId, function(tx) {
+    bigchainManger.getTx(schemaId).then(function(tx) {
         func(ajv.validate(tx.asset.data.schema, metadata)) 
+    }).catch(function(err) {
+      console.log("XXXXXXXXXXXXXXXXXXXXXX")
+      throw err;
     })
 }
 
-PIMaasManger.prototype.getTx = function(tx, func) {
-    bigchainManger.getTx(tx, func);
+PIMaasManger.prototype.getTx = function(tx) {
+  return new Promise(function (resolve, reject) {
+      bigchainManger.getTx(tx).then(
+        function(retrievedTx) {
+          resolve(retrievedTx)
+      })
+  })
 }
 
 PIMaasManger.prototype.postTx = function(tx, func) {

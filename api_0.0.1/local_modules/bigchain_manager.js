@@ -35,10 +35,16 @@ BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey
 
 BigchainManger.prototype.getTx = function(txId, func) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
+    return new Promise(
+    function (resolve, reject) {  
         conn.getTransaction(txId).then(
                 function(retrievedTx) {
-            func(retrievedTx)
+            resolve(retrievedTx)
+        }).catch(
+            function (err) {
+            reject(reject) 
         })
+    })
 }
 
 BigchainManger.prototype.postTx = function(tx, func) {

@@ -47,7 +47,7 @@ function createTransaction(req, res) {
 
 function getTransaction(req, res) {
   var id = req.swagger.params.id.value;
-  pimaasManger.getTx(id, function(tx){
+  pimaasManger.getTx(id).then(function(tx){
       res.status(200).json(tx)
-  });
+  })
 }

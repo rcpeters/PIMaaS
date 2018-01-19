@@ -88,8 +88,7 @@ Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of start
 
 ## Get a PIM
 
-        curl "Content-Type: application/json" "http://localhost:10010/pims/FestivalSchema/7b4a184082864f966e0375a605246dee445141e96006940097fb1983ddec4182"
-        curl: (3) Port number ended with ' '
+        curl -H "Content-Type: application/json" "http://localhost:10010/pims/FestivalSchema/7b4a184082864f966e0375a605246dee445141e96006940097fb1983ddec4182"
         {"schemaId":"7dff6919c2fec5d81cf5036ae6e7d56d6d59be25f372db711b12b82d324b2786","metadata":{"@context":"http://schema.org","@type":"Festival","name":"PIDapalooza","startDate":"2018-01-18","endDate":"2018-01-19","performer":{"@type":"Person","@id":"https://orcid.org/0000-0002-0036-9460","name":"Rob Peters"}}}
 
 ## See transaction detail

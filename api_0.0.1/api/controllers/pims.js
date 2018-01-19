@@ -42,14 +42,14 @@ function getPim(req, res) {
   var setName = req.swagger.params.setName.value;
 
   // this sends back a JSON response which is a single string
-  pimaasManger.getTx(pimId, function(tx){
+  pimaasManger.getTx(pimId).then(function(tx){
       res.status(200).json(tx.asset.data);
   });
 }
 
 /*
  sample curl:
- curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"name":"test", "schema": {}}' -X POST "http://localhost:10010/sets"
+ curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"@context": "http://schema.org","@type": "Festival","name": "PIDapalooza","startDate": "2018-01-18","endDate": "2018-01-19","performer": {"@type": "Person","@id": "https://orcid.org/0000-0002-0036-9460","name": "Rob Peters"}}' -X POST "http://localhost:10010/pims"
 */
 
 function createPim(req, res) {
@@ -58,12 +58,15 @@ function createPim(req, res) {
   var publicKey = req.swagger.params.publicKey.value;
   //console.log(JSON.stringify(req.swagger));
   //console.log(req.body);
-  
-  pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
-    function(trans){ 
-    // this sends back a JSON response which is a single string
-      //console.log(JSON.stringify(trans, null, 4));
-      res.location('/pims/' + trans.metadata.setName + '/' + trans.id)
-      res.status(201).json(trans.asset.data);
-  })
-}
+  try {
+    pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
+      function(trans){ 
+        // this sends back a JSON response which is a single string
+        //console.log(JSON.stringify(trans, null, 4));
+        res.location('/pims/' + trans.metadata.setName + '/' + trans.id)
+        res.status(201).json(trans.asset.data);
+    })
+  } catch (e) {
+    res.status(500).json(e);
+  }
+ }
