@@ -42,6 +42,8 @@ function createTransaction(req, res) {
     console.log(JSON.stringify(trans, null, 4))
       res.location('/sets/' + trans.id)
       res.status(201).json(trans.asset.data)
+  }).catch(function(err) {
+        res.status(400).json(err);
   })
 }
 
@@ -49,5 +51,7 @@ function getTransaction(req, res) {
   var id = req.swagger.params.id.value;
   pimaasManger.getTx(id).then(function(tx){
       res.status(200).json(tx)
+  }).catch(function(err) {
+        res.status(400).json(err);
   })
 }

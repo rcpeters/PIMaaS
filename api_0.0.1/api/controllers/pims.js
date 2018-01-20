@@ -43,8 +43,10 @@ function getPim(req, res) {
 
   // this sends back a JSON response which is a single string
   pimaasManger.getTx(pimId).then(function(tx){
-      res.status(200).json(tx.asset.data);
-  });
+      res.status(200).json(tx.asset.data)
+  }).catch(function(err) {
+        res.status(400).json(err);
+  })
 }
 
 /*
@@ -64,5 +66,7 @@ function createPim(req, res) {
         //console.log(JSON.stringify(trans, null, 4));
         res.location('/pims/' + trans.metadata.setName + '/' + trans.id)
         res.status(201).json(trans.asset.data);
+    }).catch(function(err) {
+        res.status(400).json(err);
     })
  }

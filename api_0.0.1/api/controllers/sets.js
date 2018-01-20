@@ -48,6 +48,8 @@ function createSet(req, res) {
     console.log(JSON.stringify(trans, null, 4));
       res.location('/sets/' + trans.id)
       res.status(201).json(trans.asset.data);
+  }).catch(function(err) {
+        res.status(400).json(err);
   })
 }
 
@@ -59,5 +61,7 @@ function getSet(req, res) {
   var setId = req.swagger.params.setId.value;
   pimaasManger.getSet(setId).then(function(tx){
       res.status(200).json(tx);
+  }).catch(function(err) {
+        res.status(400).json(err);
   })
 }

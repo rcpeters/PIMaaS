@@ -18,7 +18,7 @@ BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey) {
         bigchainManger.postTx.then(
             resolve(this.signTx(data, publicKey, privateKey))
         ).catch(function (err) {
-            throw err; 
+            reject(err); 
         })
     })
 }
@@ -46,7 +46,7 @@ BigchainManger.prototype.getTx = function(txId) {
                 function(retrievedTx) {
             resolve(retrievedTx)
         }).catch(function (err) {
-            throw err; 
+            reject(err); 
         })
     })
 }
@@ -59,7 +59,7 @@ BigchainManger.prototype.postTx = function(tx) {
             .then(function(retrievedTx) {
                 resolve(retrievedTx);
         }).catch(function(err) {
-          throw err;
+          reject(err);
         })
     })    
 }

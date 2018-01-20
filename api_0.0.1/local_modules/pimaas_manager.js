@@ -38,10 +38,10 @@ PIMaasManger.prototype.signTxAndPost = function(data, publicKey, privateKey) {
               resolve(tx)
            });    
         }).catch(function(err) {
-            throw err;
+            reject(err);
         })
     }).catch(function(err) {
-        throw err;
+        reject(err);
     })
 }
 
@@ -63,7 +63,9 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
                 if (ajv.validate(pimSet.schema,data.metadata))
                     resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
                 else
-                    throw new Error("Doesn't validate")
+                    reject(new Error("Doesn't validate"))
+            }).catch(function(err) {
+                reject(err);
             })
         }
     })
@@ -75,7 +77,7 @@ PIMaasManger.prototype.getSet = function(txId) {
         function(retrievedTx) {
           resolve(retrievedTx.asset.data)
       }).catch(function(err) {
-        throw err;
+        reject(err);
     })
   })
 }
@@ -86,7 +88,7 @@ PIMaasManger.prototype.getTx = function(tx) {
         function(retrievedTx) {
           resolve(retrievedTx)
       }).catch(function(err) {
-         throw err;
+        reject(err);
     })
   })
 }
@@ -95,7 +97,7 @@ PIMaasManger.prototype.postTx = function(tx) {
     return new Promise(function (resolve, reject) {
         bigchainManger.postTx(tx).then(resolve(tx))
     }).catch(function(err) {
-        throw err;
+        reject(err);
     })    
 }
 
