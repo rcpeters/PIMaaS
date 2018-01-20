@@ -42,7 +42,7 @@ function createSet(req, res) {
   //console.log(JSON.stringify(req.swagger));
   //console.log(req.body);
   
-  pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
+  pimaasManger.signTxAndPost(req.body, publicKey, privateKey).then( 
     function(trans){ 
     // this sends back a JSON response which is a single string
     console.log(JSON.stringify(trans, null, 4));

@@ -58,15 +58,11 @@ function createPim(req, res) {
   var publicKey = req.swagger.params.publicKey.value;
   //console.log(JSON.stringify(req.swagger));
   //console.log(req.body);
-  try {
-    pimaasManger.signTxAndPost(req.body, publicKey, privateKey, 
+    pimaasManger.signTxAndPost(req.body, publicKey, privateKey).then( 
       function(trans){ 
         // this sends back a JSON response which is a single string
         //console.log(JSON.stringify(trans, null, 4));
         res.location('/pims/' + trans.metadata.setName + '/' + trans.id)
         res.status(201).json(trans.asset.data);
     })
-  } catch (e) {
-    res.status(500).json(e);
-  }
  }

@@ -11,14 +11,20 @@ BigchainManger.prototype.getEd25519Keypair = function() {
     return new this.driver.Ed25519Keypair();
 }
 
-BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey, func) {
+BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey) {
 // Construct a transaction payload
-    this.postTx(this.signTx(data, publicKey, privateKey), func);    
+    var bigchainManger = this;
+    return new Promise(function (resolve, reject) {  
+        bigchainManger.postTx.then(
+            resolve(this.signTx(data, publicKey, privateKey))
+        ).catch(function (err) {
+            throw err; 
+        })
+    })
 }
 
 BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey) {
-    console.log("signTx")
-    console.log(privateKey)
+    console.log("signTx")    
     var tx = this.driver.Transaction.makeCreateTransaction(
         data,
            // Metadata contains information about the transaction itself
@@ -33,27 +39,28 @@ BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey
     return this.driver.Transaction.signTransaction(tx, privateKey)    
 }
 
-BigchainManger.prototype.getTx = function(txId, func) {
+BigchainManger.prototype.getTx = function(txId) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
-    return new Promise(
-    function (resolve, reject) {  
+    return new Promise(function (resolve, reject) {  
         conn.getTransaction(txId).then(
                 function(retrievedTx) {
             resolve(retrievedTx)
-        }).catch(
-            function (err) {
-            reject(reject) 
+        }).catch(function (err) {
+            throw err; 
         })
     })
 }
 
-BigchainManger.prototype.postTx = function(tx, func) {
+BigchainManger.prototype.postTx = function(tx) {
     const conn = new this.driver.Connection(this.API_PATH) // should this be pooled?
-    conn.postTransaction(tx)
+    return new Promise(function (resolve, reject) { 
+        conn.postTransaction(tx)
             .then(() => conn.pollStatusAndFetchTransaction(tx.id))
-        .then(
-        function(retrievedTx) {
-            func(retrievedTx);
+            .then(function(retrievedTx) {
+                resolve(retrievedTx);
+        }).catch(function(err) {
+          throw err;
+        })
     })    
 }
 
