@@ -42,8 +42,8 @@ function getPim(req, res) {
   var setName = req.swagger.params.setName.value;
 
   // this sends back a JSON response which is a single string
-  pimaasManger.getTx(pimId).then(function(tx){
-      res.status(200).json(tx.asset.data)
+  pimaasManger.getPimTx(pimId).then(function(pimTx){
+      res.status(200).json(pimTx.getTx().asset.data)
   }).catch(function(err) {
         res.status(400).json(err);
   })

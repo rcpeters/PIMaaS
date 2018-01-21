@@ -3,6 +3,29 @@ var bigchainManger = require("./bigchain_manager.js"),
 
 var ajv = new Ajv();
 
+class PimTx {
+    constructor() {
+        this.supersedByTx = null;
+        this.tx = null;
+    }
+
+    getSuperseded() {
+        return this.supersedByTx;
+    }
+
+    setSuperseded(tx) {
+        this.supersedByTx = tx;
+    }
+
+    getTx() {
+        return  this.tx;
+    }
+
+    setTx(tx) {
+        this.tx = tx;
+    }
+}
+
 var setSchema = {
   //"$schema": "http://json-schema.org/draft-06/schema#",
   "title": "Set setSchema",
@@ -57,7 +80,8 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
         else {
             console.log(data);
             txMeta.schemaId = data.schemaId;
-            pimaasManger.getSet(data.schemaId).then(function(pimSet) {
+            pimaasManger.getPimTx(data.schemaId).then(function(pimTx) {
+                var pimSet = pimTx.getTx().asset.data
                 console.log(ajv.validate(pimSet.schema,data.metadata))
                 txMeta.setName = pimSet.name           
                 if (ajv.validate(pimSet.schema,data.metadata))
@@ -71,22 +95,21 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
     })
 }
 
-PIMaasManger.prototype.getSet = function(txId) {
+PIMaasManger.prototype.getFirstSupersed = function(txId) {
   return new Promise(function (resolve, reject) {
-      bigchainManger.getTx(txId).then(
-        function(retrievedTx) {
-          resolve(retrievedTx.asset.data)
-      }).catch(function(err) {
-        reject(err);
-    })
+        reject("TODO: function not implemented");
   })
 }
 
-PIMaasManger.prototype.getTx = function(tx) {
+
+PIMaasManger.prototype.getPimTx = function(tx) {
+  var pimTx = new PimTx();
   return new Promise(function (resolve, reject) {
       bigchainManger.getTx(tx).then(
         function(retrievedTx) {
-          resolve(retrievedTx)
+          pimTx.setTx(retrievedTx)
+          console.log(pimTx)
+          resolve(pimTx)
       }).catch(function(err) {
         reject(err);
     })
