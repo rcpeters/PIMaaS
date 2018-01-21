@@ -1,6 +1,15 @@
 # PIMaaS
 Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of starting a discussion. Please see [PID-U-LIKE](https://docs.google.com/presentation/d/e/2PACX-1vRKSMH33nwPaXUQFQmGsWOFFQePRW5-C7cpbLFeOBFydNWkyELPGeauRgXSJXi8a_Upjn_qA8iuCaA0/pub?start=false&loop=false&delayms=3000) representation for ideas behind this demo/prototype.
 
+## API documentation
+See `/docs` when API application is running.
+
+## Identifier format 
+
+[protocol][domain]/pims/[name space]/[PIM ID]
+
+For example:
+`http://localhost:10010/pims/FestivalSchema/7b4a184082864f966e0375a605246dee445141e96006940097fb1983ddec4182`
 
 ## Dev there are two directories with READMEs detailing how to deploy locally.
 

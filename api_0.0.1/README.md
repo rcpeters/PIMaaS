@@ -12,3 +12,5 @@ Some common commands:
 
 * `swagger project start -m` fires up api with swagger in mock mode
 
+## API documentation
+Is at /docs when app is running for example http://localhost:10010/docs/.
