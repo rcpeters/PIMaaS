@@ -1,10 +1,15 @@
-var mongojs = require('mongojs')
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+
+const mongoUrl = 'mongodb://localhost:27017/';
+
 
 // singleton https://team.goodeggs.com/export-this-interface-design-patterns-for-node-js-modules-b48a3b1f8f40
 function BigchainManger () {
    console.log("New BigchainManger Instance")
-   this.API_PATH = 'http://localhost:9984/api/v1/';
+   this.API_PATH = 'http://localhost:9984/api/v1/'
    this.driver = require('bigchaindb-driver')
+
 }
 
 BigchainManger.prototype.getEd25519Keypair = function() {
@@ -24,7 +29,6 @@ BigchainManger.prototype.signTxAndPost = function(data, publicKey, privateKey) {
 }
 
 BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey) {
-    console.log("signTx")    
     var tx = this.driver.Transaction.makeCreateTransaction(
         data,
            // Metadata contains information about the transaction itself
@@ -37,6 +41,31 @@ BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey
         publicKey
     )
     return this.driver.Transaction.signTransaction(tx, privateKey)    
+}
+
+BigchainManger.prototype.getSuperseId = function(txId) {
+    MongoClient.connect(mongoUrl, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db('bigchain');
+      console.log(dbo);
+      dbo.collection('bigchain').aggregate([
+        { $lookup:
+           {
+             from: 'assets',
+             localField: 'id',
+             foreignField: 'id',
+             as: 'chain'
+           }
+         }
+        ]).toArray(function(err, res) {
+        if (err) {
+           console.log(err)
+           throw err;
+        }
+            console.log(JSON.stringify(res));
+        db.close();
+      });
+    });
 }
 
 BigchainManger.prototype.getTx = function(txId) {

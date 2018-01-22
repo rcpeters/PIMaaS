@@ -105,7 +105,6 @@ For example:
         curl -H "Content-Type: application/json" "http://localhost:10010/transactions/7dff6919c2fec5d81cf5036ae6e7d56d6d59be25f372db711b12b82d324b2786"
         {"inputs":[{"owners_before":["H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH"],"fulfills":null,"fulfillment":"pGSAIO8L07sWS_LhRqxAz1P9bknAnHSiMYIloRn_XhD2zcDygUDhU1n3jT0mG_KRasIhjgDeOPIflADB5VXHT5PAgzXfwE2KNG24K6wgGmoOAgOcUcOadWu21HB-zCliGEBEUP0P"}],"outputs":[{"public_keys":["H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH"],"condition":{"details":{"type":"ed25519-sha-256","public_key":"H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH"},"uri":"ni:///sha-256;Ow3ypTB-XUutOSDu_VPQt0dM113te0W6NFrRWE_MtBQ?fpt=ed25519-sha-256&cost=131072"},"amount":"1"}],"operation":"CREATE","metadata":{"isSet":true,"setName":"FestivalSchema"},"asset":{"data":{"name":"FestivalSchema","schema":{}}},"version":"1.0","id":"7dff6919c2fec5d81cf5036ae6e7d56d6d59be25f372db711b12b82d324b2786"}
 
-## Supersede a PIM
+## Not yet implemented but should be
+Update, merge, split and deprecate.
 
-
-## Supersede a set

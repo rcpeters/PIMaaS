@@ -49,10 +49,6 @@ function PIMaasManger () {
    console.log("New PIMaasManger Instance")
 }
 
-PIMaasManger.prototype.getEd25519Keypair = function() {
-    bigchainManger.getEd25519Keypair();
-}
-
 PIMaasManger.prototype.signTxAndPost = function(data, publicKey, privateKey) {
     pimaasManger = this
     return new Promise(function (resolve, reject) {
@@ -73,16 +69,17 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
     var pimaasManger = this
     return new Promise(function (resolve, reject) {
         txMeta.isSet = ajv.validate(setSchema, data);
+        txMeta.createdDate = new Date().getTime();
+        if (data.supersedes)
+            txMeta.createdDate = data.supersedes
         if (txMeta.isSet == true) {
             txMeta.setName = data.name;
             resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
         }
         else {
-            console.log(data);
             txMeta.schemaId = data.schemaId;
             pimaasManger.getPimTx(data.schemaId).then(function(pimTx) {
                 var pimSet = pimTx.getTx().asset.data
-                console.log(ajv.validate(pimSet.schema,data.metadata))
                 txMeta.setName = pimSet.name           
                 if (ajv.validate(pimSet.schema,data.metadata))
                     resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
@@ -103,12 +100,15 @@ PIMaasManger.prototype.getFirstSupersed = function(txId) {
 
 
 PIMaasManger.prototype.getPimTx = function(tx) {
+  
+  //next line is just testing
+  //bigchainManger.getSuperseId(tx);
+
   var pimTx = new PimTx();
   return new Promise(function (resolve, reject) {
       bigchainManger.getTx(tx).then(
         function(retrievedTx) {
           pimTx.setTx(retrievedTx)
-          console.log(pimTx)
           resolve(pimTx)
       }).catch(function(err) {
         reject(err);
