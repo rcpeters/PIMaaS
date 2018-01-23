@@ -6,10 +6,11 @@ See `/docs` when API application is running.
 
 ## Identifier format 
 
-[protocol][domain]/pims/[name space]/[PIM ID]
+    [protocol][domain]/pims/[name space]/[PIM ID]
 
 For example:
-`http://localhost:10010/pims/FestivalSchema/7b4a184082864f966e0375a605246dee445141e96006940097fb1983ddec4182`
+
+    http://localhost:10010/pims/FestivalSchema/7b4a184082864f966e0375a605246dee445141e96006940097fb1983ddec4182
 
 ## Dev there are two directories with READMEs detailing how to deploy locally.
 
