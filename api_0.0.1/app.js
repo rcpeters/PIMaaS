@@ -3,6 +3,8 @@
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var app = require('express')();
+var pretty = require('express-prettify');
+
 module.exports = app; // for testing
 
 var config = {
@@ -12,7 +14,8 @@ var config = {
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
 
-   app.use(SwaggerUi(swaggerExpress.runner.swagger));
+  app.use(pretty({ query: 'pretty' }));
+  app.use(SwaggerUi(swaggerExpress.runner.swagger));
 
   // install middleware
   swaggerExpress.register(app);

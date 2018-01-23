@@ -49,7 +49,7 @@ function createTransaction(req, res) {
 
 function getTransaction(req, res) {
   var id = req.swagger.params.id.value;
-  pimaasManger.getTx(id).then(function(tx){
+  pimaasManger.getPimTx(id).then(function(tx){
       res.status(200).json(tx)
   }).catch(function(err) {
         res.status(400).json(err);
