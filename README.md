@@ -1,5 +1,5 @@
 # PIMaaS
-Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of starting a discussion. Please see [PID-U-LIKE](https://docs.google.com/presentation/d/e/2PACX-1vRKSMH33nwPaXUQFQmGsWOFFQePRW5-C7cpbLFeOBFydNWkyELPGeauRgXSJXi8a_Upjn_qA8iuCaA0/pub?start=false&loop=false&delayms=3000) representation for ideas behind this demo/prototype.
+Persisted and Identified Metadata as a Service (PIMaaS) demo as a means of starting a discussion. Please see [PID-U-LIKE](https://docs.google.com/presentation/d/e/2PACX-1vRKSMH33nwPaXUQFQmGsWOFFQePRW5-C7cpbLFeOBFydNWkyELPGeauRgXSJXi8a_Upjn_qA8iuCaA0/pub?start=false&loop=false&delayms=3000) presentation for ideas behind this demo/prototype.
 
 ## API documentation
 See `/docs` when API application is running.
