@@ -190,6 +190,71 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/pimSet"
+
+  /dead:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: transactions
+    post:
+      operationId: dead
+      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
+      consumes:
+      - "application/json"
+      parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/dead"
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/dead"
+
+  /deprecate:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: transactions
+    post:
+      operationId: deprecate
+      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
+      consumes:
+      - "application/json"
+      parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/deprecate"
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/dead"
+
   
   /transactions/{id}:
     # binds a127 app logic to a route
@@ -269,7 +334,28 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 
 # complex objects have schema definitions
+
 definitions:
+  deprecate:
+    required:
+      - id
+      - newId 
+    properties:
+      id:
+        description: ID of pim or schema to be deprecated
+        type: string
+      newId:
+        description: ID of PIM  or schema to deprecate to
+        type: string
+
+  dead:
+    required:
+      - id
+    properties:
+      id:
+        description: ID of pim or schema to be marked dead
+        type: string
+
   ed25519Keypair:
     required:
       - publicKey
@@ -282,7 +368,6 @@ definitions:
         description: Private key
         type: string
 
-
   pim:
     required:
       - schemaId
@@ -294,9 +379,6 @@ definitions:
       metadata:
         description: Metadata to be persisted
         type: object
-      supersedes:
-        description: ID of another PIM this PIM supersedes...only PIM owners should use this (enforced at the webapp level).
-        type: string
 
   pimList:
     required:
@@ -322,9 +404,6 @@ definitions:
       schema:
         description: JSON schema used to validate PIMs. Best practice would to use JSON-LD and Schema.org, however we any JSON schema is allowed to provide the flexibly needed for your set of PIMs.
         type: object
-      supersedes:
-        description: ID of another PIM this PIM supersedes...only schema owners should use this (enforced at the webapp level).
-        type: string
 
   ErrorResponse:
     required:
