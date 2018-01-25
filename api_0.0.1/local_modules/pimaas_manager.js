@@ -5,16 +5,25 @@ var ajv = new Ajv();
 
 class PimTx {
     constructor() {
-        this.supersedByTx = null;
+        this.deprecateTx = null;
+        this.deadTx = null;
         this.tx = null;
     }
 
-    getSuperseded() {
-        return this.supersedByTx;
+    getDeprecateTx() {
+        return this.deprecateTx;
     }
 
-    setSuperseded(tx) {
-        this.supersedByTx = tx;
+    setDeprecateTx(tx) {
+        this.deprecateTx = tx;
+    }
+
+   getDeadTx() {
+        return this.deadTx;
+    }
+
+    setDeadTx(tx) {
+        this.deadTx = tx;
     }
 
     getTx() {
@@ -44,6 +53,39 @@ var setSchema = {
   "additionalProperties": false
 };
 
+var deprecatedSchema = {
+  //"$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Deprecate Schema",
+  "type": "object",
+  "properties": {
+    "deprecateId": {
+      "description": "schema",
+      "type": "string"
+    },
+    "newId": {
+      "description": "schema",
+      "type": "string"
+    },
+  },
+  "required": ["deprecateId", "newId"],
+  "additionalProperties": false
+};
+
+var deadSchema = {
+  //"$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Dead Schema",
+  "type": "object",
+  "properties": {
+    "deadId": {
+      "description": "schema",
+      "type": "string"
+    },
+  },
+  "required": ["deadId"],
+  "additionalProperties": false
+};
+
+
 // singleton https://team.goodeggs.com/export-this-interface-design-patterns-for-node-js-modules-b48a3b1f8f40
 function PIMaasManger () {
    console.log("New PIMaasManger Instance")
@@ -68,15 +110,28 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
     var txMeta = {};
     var pimaasManger = this
     return new Promise(function (resolve, reject) {
+        console.log(data)
+        console.log("1---------------------------")
+        txMeta.isDead = ajv.validate(deadSchema, data);
+        console.log("2---------------------------")
+        txMeta.isDeprecated = ajv.validate(deprecatedSchema, data);
+         console.log("3---------------------------")
+      
         txMeta.isSet = ajv.validate(setSchema, data);
         txMeta.createdDate = new Date().getTime();
-        if (data.supersedes)
-            txMeta.createdDate = data.supersedes
+        console.log("4---------------------------")
+        console.log(txMeta)
         if (txMeta.isSet == true) {
-            txMeta.setName = data.name;
+            txMeta.setName = data.name
             resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
-        }
-        else {
+        } else if (txMeta.isDead == true) {
+            txMeta.setName = "dead"
+            console.log(data)
+            resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
+        } else if (txMeta.isDeprecated == true) {
+            txMeta.setName = "deprecated"
+            resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
+        } else {
             txMeta.schemaId = data.schemaId;
             pimaasManger.getPimTx(data.schemaId).then(function(pimTx) {
                 var pimSet = pimTx.getTx().asset.data

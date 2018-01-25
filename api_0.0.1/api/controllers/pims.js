@@ -27,7 +27,9 @@ var pimaasManger = require("../../local_modules/pimaas_manager.js");
  */
 module.exports = {
   getPim: getPim,
-  createPim: createPim
+  createPim: createPim,
+  createDead: createDead,
+  createDeprecated: createDeprecated
 };
 
 /*
@@ -49,10 +51,13 @@ function getPim(req, res) {
   })
 }
 
-/*
- sample curl:
- curl -v -H  "Content-Type: application/json" -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  -d '{"@context": "http://schema.org","@type": "Festival","name": "PIDapalooza","startDate": "2018-01-18","endDate": "2018-01-19","performer": {"@type": "Person","@id": "https://orcid.org/0000-0002-0036-9460","name": "Rob Peters"}}' -X POST "http://localhost:10010/pims"
-*/
+function createDead(req, res) {
+  createPim(req, res)
+}
+
+function createDeprecated(req, res) {
+  createPim(req, res)
+}
 
 function createPim(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}

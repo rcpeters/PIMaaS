@@ -227,6 +227,58 @@ Response
       }
     }
 
-## Not yet implemented but should be
-Update, merge, split and deprecate.
+## Dead
 
+Request
+
+	curl -v -H  "Content-Type: application/json"  \
+	-H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" \
+	-H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  \
+	-d '{"deadId": "3450898127c7c191b47281fea4007c1068cd47ee488e5756b2a329b6ff665ff3"}' \
+	    "http://localhost:10010/dead?pretty"
+
+Response
+
+	curl -v -H  "Content-Type: application/json"  -H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" -H"privateKey: FHXs4Q84SZWSj3E62gNjjeme3PMPAqgfavzTEtBTTX"  -d '{"deadId": "3450898127c7c191b47281fea4007c1068cd47ee488e5756b2a329b6ff665ff3"}'     "http://localhost:10010/dead?pretty"
+	*   Trying ::1...
+	* TCP_NODELAY set
+	* Connected to localhost (::1) port 10010 (#0)
+	> POST /dead?pretty HTTP/1.1
+	> Host: localhost:10010
+	> User-Agent: curl/7.54.0
+	> Accept: */*
+	> Content-Type: application/json
+	> publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH
+	> privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX
+	> Content-Length: 78
+	> 
+	* upload completely sent off: 78 out of 78 bytes
+	< HTTP/1.1 201 Created
+	< X-Powered-By: Express
+	< Access-Control-Allow-Origin: *
+	< Location: /pims/dead/434a9b59ad414b4b6fd87d45e242af4798f4808d80a748223abf863d40c2ef2a
+	< Content-Type: application/json; charset=utf-8
+	< Content-Length: 82
+	< ETag: W/"52-508GRpUQkPQmc4I4GNJJVRPNzC0"
+	< Date: Thu, 25 Jan 2018 18:14:28 GMT
+	< Connection: keep-alive
+	< 
+	{
+	  "deadId": "3450898127c7c191b47281fea4007c1068cd47ee488e5756b2a329b6ff665ff3"
+	* Connection #0 to host localhost left intact
+	}
+
+Not finished....
+http://localhost:10010/pims/dead/434a9b59ad414b4b6fd87d45e242af4798f4808d80a748223abf863d40c2ef2a?pretty
+
+## Deprecate.
+
+Request
+
+	curl -v -H  "Content-Type: application/json"  \
+	-H"publicKey: H68uBZ4GrrxiyKnbuANUUKRS6KfFbgFDy47ZXDLmRJUH" \
+	-H"privateKey: FHXs4Q84SZWSj3E62gNjjemYve3PMPAqgfavzTEtBTTX"  \
+	-d '{"deprecateId": "3450898127c7c191b47281fea4007c1068cd47ee488e5756b2a329b6ff665ff3", "newId": "7dff6919c2fec5d81cf5036ae6e7d56d6d59be25f372db711b12b82d324b2786"}' \
+	    "http://localhost:10010/dead?pretty"
+
+Not finished....

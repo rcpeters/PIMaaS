@@ -22,9 +22,9 @@ paths:
 
   /dead:
     # binds a127 app logic to a route
-    x-swagger-router-controller: transactions
+    x-swagger-router-controller: pims
     post:
-      operationId: dead
+      operationId: createDead
       description: deprecates transaction to dead transaction.
       consumes:
       - "application/json"
@@ -54,9 +54,9 @@ paths:
 
   /deprecate:
     # binds a127 app logic to a route
-    x-swagger-router-controller: transactions
+    x-swagger-router-controller: pims
     post:
-      operationId: deprecate
+      operationId: createDeprecated
       description: deprecates old transaction to new transaction
       consumes:
       - "application/json"
@@ -82,7 +82,7 @@ paths:
               type: "string"
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/dead"
+            $ref: "#/definitions/deprecate"
 
   /pims:
     # binds a127 app logic to a route
@@ -335,10 +335,10 @@ paths:
 definitions:
   deprecate:
     required:
-      - id
+      - deprecateId
       - newId 
     properties:
-      id:
+      deprecateId:
         description: ID of pim or schema to be deprecated
         type: string
       newId:
@@ -347,9 +347,9 @@ definitions:
 
   dead:
     required:
-      - id
+      - deadId
     properties:
-      id:
+      deadId:
         description: ID of pim or schema to be marked dead
         type: string
 
