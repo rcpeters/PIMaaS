@@ -45,7 +45,15 @@ function getPim(req, res) {
 
   // this sends back a JSON response which is a single string
   pimaasManger.getPimTx(pimId).then(function(pimTx){
-      res.status(200).json(pimTx.getTx().asset.data)
+      if (pimTx.getDeadTx() != null) {
+        res.location('/pims/dead/' + pimTx.getDeadTx().id)
+        res.status(301).json(pimTx.getTx().asset.data)
+      } else if (pimTx.getDeprecateTx() != null) {
+        res.location('/pims/deprecate/' + pimTx.getDeprecateTx().asset.data.newId)
+        res.status(301).json(pimTx.getTx().asset.data)
+      } else {
+        res.status(200).json(pimTx.getTx().asset.data)
+      }
   }).catch(function(err) {
         res.status(400).json(err);
   })

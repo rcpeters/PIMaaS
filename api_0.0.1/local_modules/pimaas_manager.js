@@ -110,23 +110,15 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
     var txMeta = {};
     var pimaasManger = this
     return new Promise(function (resolve, reject) {
-        console.log(data)
-        console.log("1---------------------------")
         txMeta.isDead = ajv.validate(deadSchema, data);
-        console.log("2---------------------------")
-        txMeta.isDeprecated = ajv.validate(deprecatedSchema, data);
-         console.log("3---------------------------")
-      
+        txMeta.isDeprecated = ajv.validate(deprecatedSchema, data);      
         txMeta.isSet = ajv.validate(setSchema, data);
         txMeta.createdDate = new Date().getTime();
-        console.log("4---------------------------")
-        console.log(txMeta)
         if (txMeta.isSet == true) {
             txMeta.setName = data.name
             resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
         } else if (txMeta.isDead == true) {
             txMeta.setName = "dead"
-            console.log(data)
             resolve(bigchainManger.signTx(data, txMeta, publicKey, privateKey))
         } else if (txMeta.isDeprecated == true) {
             txMeta.setName = "deprecated"
@@ -147,26 +139,39 @@ PIMaasManger.prototype.signTx = function(data, publicKey, privateKey) {
     })
 }
 
-PIMaasManger.prototype.getFirstSupersed = function(txId) {
-  return new Promise(function (resolve, reject) {
-        reject("TODO: function not implemented");
-  })
-}
 
-
-PIMaasManger.prototype.getPimTx = function(tx) {
-  
-  //next line is just testing
-  //bigchainManger.getSuperseId(tx);
-
-  var pimTx = new PimTx();
-  return new Promise(function (resolve, reject) {
-      bigchainManger.getTx(tx).then(
-        function(retrievedTx) {
+PIMaasManger.prototype.getDead = function(txId) {
+  return new Promise(function(resolve, reject) {
+    bigchainManger.getTx(tx).then(
+      function(retrievedTx) {
           pimTx.setTx(retrievedTx)
           resolve(pimTx)
       }).catch(function(err) {
         reject(err);
+    })
+    reject("TODO: function not implemented");
+  })
+}
+
+
+PIMaasManger.prototype.getPimTx = function(txId) {
+  
+
+  var pimTx = new PimTx();
+  return new Promise(function (resolve, reject) {
+    bigchainManger.getDeprecate(txId).then(function(deprecateTx){
+      bigchainManger.getDead(txId).then(function(deadTx){
+        console.log(deadTx)
+        pimTx.setDeadTx(deadTx)
+        pimTx.setDeprecateTx(deprecateTx)
+        bigchainManger.getTx(txId).then(
+          function(retrievedTx) {
+              pimTx.setTx(retrievedTx)
+              resolve(pimTx)
+          }).catch(function(err) {
+            reject(err);
+        })
+      })
     })
   })
 }

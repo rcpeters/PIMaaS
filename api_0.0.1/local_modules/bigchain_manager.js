@@ -43,29 +43,32 @@ BigchainManger.prototype.signTx = function(data, metadata, publicKey, privateKey
     return this.driver.Transaction.signTransaction(tx, privateKey)    
 }
 
-BigchainManger.prototype.getSuperseId = function(txId) {
-    MongoClient.connect(mongoUrl, function(err, db) {
-      if (err) throw err;
-      var dbo = db.db('bigchain');
-      console.log(dbo);
-      dbo.collection('bigchain').aggregate([
-        { $lookup:
-           {
-             from: 'assets',
-             localField: 'id',
-             foreignField: 'id',
-             as: 'chain'
-           }
-         }
-        ]).toArray(function(err, res) {
-        if (err) {
-           console.log(err)
-           throw err;
-        }
-            console.log(JSON.stringify(res));
-        db.close();
-      });
-    });
+BigchainManger.prototype.getDeprecate = function(txId) { 
+    return new Promise(function (resolve, reject) {
+        MongoClient.connect(mongoUrl, function(err, client) {
+          if (err) throw err
+          var db = client.db('bigchain')
+          console.log(db)
+          const assets = db.collection('assets');
+          assets.findOne({ 'data.deprecateId': txId } , function (err, docs) {
+            resolve(docs)
+          })
+        })
+    })
+}
+
+BigchainManger.prototype.getDead = function(txId) { 
+    return new Promise(function (resolve, reject) {
+        MongoClient.connect(mongoUrl, function(err, client) {
+          if (err) throw err
+          var db = client.db('bigchain')
+          console.log(db)
+          const assets = db.collection('assets');
+          assets.findOne({ 'data.deadId': txId } , function (err, docs) {
+            resolve(docs)
+          })
+        })
+    })
 }
 
 BigchainManger.prototype.getTx = function(txId) {
