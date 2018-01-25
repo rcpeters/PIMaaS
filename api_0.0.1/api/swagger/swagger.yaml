@@ -20,42 +20,69 @@ produces:
   - application/json
 paths:
 
-  /pims/{setName}/{pimId}:
-    get:
-      x-swagger-router-controller: pims
-      description: Returns persisted and identified metadata (PIM)
-      # used as the method name of the controller
-      operationId: getPim
+  /dead:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: transactions
+    post:
+      operationId: dead
+      description: deprecates transaction to dead transaction.
+      consumes:
+      - "application/json"
       parameters:
-        - in: path
-          name: pimId
-          description: ID of PIM
+        - in: header
+          name: privateKey
           required: true
           type: string
-        - in: path
-          name: setName
-          description: Set Name
+        - in: header
+          name: publicKey
           required: true
           type: string
-      responses:
-        "200":
-          description: Success
+        - name: body
+          in: body
+          required: true
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/pim"
-        # responses may fall through to errors
-        "301": 
-          description: Moved Permanently, this PIM has been superseded by a new PIM
+            $ref: "#/definitions/dead"
+      responses:
+        "201":
+          description: Created
           headers:
             Location:
-              description: value points at new pim
-              type: string
+              type: "string"
           schema:
-            $ref: "#/definitions/pim"
-        default:
-          description: Error
+            # a pointer to a definition
+            $ref: "#/definitions/dead"
+
+  /deprecate:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: transactions
+    post:
+      operationId: deprecate
+      description: deprecates old transaction to new transaction
+      consumes:
+      - "application/json"
+      parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/deprecate"
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/dead"
 
   /pims:
     # binds a127 app logic to a route
@@ -124,6 +151,75 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
+  /pims/{setName}/{pimId}:
+    get:
+      x-swagger-router-controller: pims
+      description: Returns persisted and identified metadata (PIM)
+      # used as the method name of the controller
+      operationId: getPim
+      parameters:
+        - in: path
+          name: pimId
+          description: ID of PIM
+          required: true
+          type: string
+        - in: path
+          name: setName
+          description: Set Name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pim"
+        # responses may fall through to errors
+        "301": 
+          description: Moved Permanently, this PIM has been superseded by a new PIM
+          headers:
+            Location:
+              description: value points at new pim
+              type: string
+          schema:
+            $ref: "#/definitions/pim"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /sets:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: sets
+    post:
+      operationId: createSet
+      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depending on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
+      consumes:
+      - "application/json"
+      parameters:
+        - in: header
+          name: privateKey
+          required: true
+          type: string
+        - in: header
+          name: publicKey
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/pimSet"
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              type: "string"
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/pimSet"
+
   /sets/{setId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: sets
@@ -158,104 +254,6 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-
-  /sets:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: sets
-    post:
-      operationId: createSet
-      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
-      consumes:
-      - "application/json"
-      parameters:
-        - in: header
-          name: privateKey
-          required: true
-          type: string
-        - in: header
-          name: publicKey
-          required: true
-          type: string
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/pimSet"
-      responses:
-        "201":
-          description: Created
-          headers:
-            Location:
-              type: "string"
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/pimSet"
-
-  /dead:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: transactions
-    post:
-      operationId: dead
-      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
-      consumes:
-      - "application/json"
-      parameters:
-        - in: header
-          name: privateKey
-          required: true
-          type: string
-        - in: header
-          name: publicKey
-          required: true
-          type: string
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/dead"
-      responses:
-        "201":
-          description: Created
-          headers:
-            Location:
-              type: "string"
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/dead"
-
-  /deprecate:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: transactions
-    post:
-      operationId: deprecate
-      description: Creates a set definition to be used with PIMs. Does require sending public and private key. Depneding on security requirements you may choose to generate a transation locally using local_modules/bigchain_manager.js and post to /transactions.
-      consumes:
-      - "application/json"
-      parameters:
-        - in: header
-          name: privateKey
-          required: true
-          type: string
-        - in: header
-          name: publicKey
-          required: true
-          type: string
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/deprecate"
-      responses:
-        "201":
-          description: Created
-          headers:
-            Location:
-              type: "string"
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/dead"
-
-  
   /transactions/{id}:
     # binds a127 app logic to a route
     x-swagger-router-controller: transactions
@@ -334,7 +332,6 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 
 # complex objects have schema definitions
-
 definitions:
   deprecate:
     required:
@@ -366,6 +363,17 @@ definitions:
         type: string
       privateKey:
         description: Private key
+        type: string
+
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        description: human readable string
+        type: string
+      error-code:
+        description: Optional code that identifies the specific issue
         type: string
 
   pim:
@@ -404,14 +412,3 @@ definitions:
       schema:
         description: JSON schema used to validate PIMs. Best practice would to use JSON-LD and Schema.org, however we any JSON schema is allowed to provide the flexibly needed for your set of PIMs.
         type: object
-
-  ErrorResponse:
-    required:
-      - message
-    properties:
-      message:
-        description: human readable string
-        type: string
-      error-code:
-        description: Optional code that identifies the specific issue
-        type: string
