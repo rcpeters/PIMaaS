@@ -165,7 +165,7 @@ paths:
           type: string
         - in: path
           name: setName
-          description: Set Name
+          description: Set Name, this is to make is easier for humans.
           required: true
           type: string
       responses:
